@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>IDT Test</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.8/angular-sanitize.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="\idt\states.js"></script>
+        <!-- themes -->
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css" />    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css" />
+        <style>
+            .listbox { 
+                height:250px;
+                border: 1px solid black;
+                overflow:auto;
+            }
+            .displaybox {
+                border: 3px solid black;
+                border-radius: 10px ;
+                box-shadow: 6px 6px 9px 3px #CCC;
+                padding : 1em;
+                overflow:auto;
+            }
+            
+            .listbox ul {
+                list-style-type: none;
+                cursor :pointer ;
+                
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container" ng-app="states">
+            <form id="states-form" method="post" action="" ng-controller="statesCtrl">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="listbox">
+                            <ul>
+                                <li ng-repeat="(indx,item) in statesList" 
+                                    ng-click="showStateDetails(indx)" 
+                                    ng-dblclick="toggleSelected(indx)"
+                                    ng-style = "item.highlight"
+                                   >
+                                    {{item.state}}</li> 
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="listbox">
+                            <ul>
+                                <li><input type="text" placeholder="filter" ng-model="stateFilter" />
+                                <li ng-repeat="(indx,item) in statesList | filter: { state:  stateFilter } " 
+                                    ng-click="showStateDetails(indx)" 
+                                    ng-dblclick="toggleSelected(indx)"
+                                    ng-style = "item.highlight"
+                                   >
+                                    {{item.state}}</li> 
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="displaybox" ng-show="stateSelected">
+                            <h3 ng-bind="displayDetails.state"></h3>
+                            <p ng-bind="'population: '+ displayDetails.population + displayDetails.indication "></p>
+                            <p ng-bind="'Number of Counties: '+ displayDetails.counties"></p>
+                            <h4> County List </h4>
+                            <p ng-repeat="indx in displayDetails.countyDetails">{{indx.county}}: {{indx.population}}</p>
+                            <note>* indicates that the sum population totals don't equal the official state population </note>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
